@@ -4,7 +4,7 @@ export function Logo() {
   return (
     <div className="pt-20 pb-10 flex justify-center pl-8">
       <Image
-        src="/logo.png"
+        src="./logo.png"
         alt="Salesforce Logo"
         width={160}
         height={112}
