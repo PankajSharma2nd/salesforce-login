@@ -14,9 +14,12 @@ export default function LoginPage() {
   const [rememberMe, setRememberMe] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    
+    handleLogin()
+  }
+
+  const handleLogin = () => {
     // Basic validation
     if (!username || !password) {
       alert("Please enter both username and password")
@@ -25,11 +28,13 @@ export default function LoginPage() {
 
     setIsLoading(true)
     
-    // Simulate a brief loading state (optional)
-    setTimeout(() => {
-      // Redirect to Salesforce
+    // Try multiple redirect methods
+    try {
       window.location.href = "https://www.salesforce.com"
-    }, 500)
+    } catch (error) {
+      // Fallback method
+      window.open("https://www.salesforce.com", "_self")
+    }
   }
 
   return (
@@ -76,6 +81,7 @@ export default function LoginPage() {
             <Button 
               className="w-full bg-salesforce-button hover:bg-salesforce-button/90" 
               type="submit"
+              onClick={handleLogin}
               disabled={isLoading}
             >
               {isLoading ? "Logging in..." : "Log In"}
