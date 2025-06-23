@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -8,6 +9,29 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Check } from "lucide-react"
 
 export default function LoginPage() {
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
+  const [rememberMe, setRememberMe] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    
+    // Basic validation
+    if (!username || !password) {
+      alert("Please enter both username and password")
+      return
+    }
+
+    setIsLoading(true)
+    
+    // Simulate a brief loading state (optional)
+    setTimeout(() => {
+      // Redirect to Salesforce
+      window.location.href = "https://www.salesforce.com"
+    }, 500)
+  }
+
   return (
     <div className="min-h-screen flex">
       {/* Left Column */}
@@ -25,22 +49,45 @@ export default function LoginPage() {
           </div>
 
           {/* Login Form */}
-          <form className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-1.5">
               <label className="text-sm text-gray-700">Username</label>
-              <Input type="text" className="border-gray-300" />
+              <Input 
+                type="text" 
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="border-gray-300" 
+                placeholder="Enter your username"
+                disabled={isLoading}
+              />
             </div>
             <div className="space-y-1.5">
               <label className="text-sm text-gray-700">Password</label>
-              <Input type="password" className="border-gray-300" />
+              <Input 
+                type="password" 
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="border-gray-300" 
+                placeholder="Enter your password"
+                disabled={isLoading}
+              />
             </div>
 
-            <Button className="w-full bg-salesforce-button hover:bg-salesforce-button/90" type="submit">
-              Log In
+            <Button 
+              className="w-full bg-salesforce-button hover:bg-salesforce-button/90" 
+              type="submit"
+              disabled={isLoading}
+            >
+              {isLoading ? "Logging in..." : "Log In"}
             </Button>
 
             <div className="flex items-center space-x-2">
-              <Checkbox id="remember" />
+              <Checkbox 
+                id="remember" 
+                checked={rememberMe}
+                onCheckedChange={(checked) => setRememberMe(checked as boolean)}
+                disabled={isLoading}
+              />
               <label htmlFor="remember" className="text-sm text-gray-700">
                 Remember me
               </label>
@@ -113,4 +160,3 @@ export default function LoginPage() {
     </div>
   )
 }
-
